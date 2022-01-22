@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Game Rooms</title>
+		<script src='https://cdn.jsdelivr.net/npm/less@4.1.1' ></script>
+		<link href='https://fonts.googleapis.com/css?family=Roboto Mono' rel='stylesheet'>
+		<link rel='stylesheet/less' type='text/css' href='style.less'>
+		<script src='https://unpkg.com/vue'></script>
+	</head>
+	<body>
+		<div id='app'>
+			<p class='glow' id='username'>{{ username }}</p>
+			<button class='open-popup' id='open-menu' v-on:click='toggleMenu'>Menu</button>
+			<div class='popup' id='menu'>
+				<ul>
+					<li
+						v-for='game in games'
+						v-bind:key='game'
+						v-on:click='curGame = game; switchGame()'>
+						{{ game }}
+					</li>
+				</ul>
+			</div>
+
+			<div id='game'>
+				<component v-bind:is='getGame' ref="gameComponent"></component>
+				<p v-html='message'>{{ message}}</p>
+				<button id='rematch' v-on:click='requestRematch'>Rematch</button>
+				<button id='newgame' v-on:click='newGame'>New Game</button>
+			</div>
+	
+			<button class='open-popup' id='open-chat' v-on:click='openChat'>Chat</button>
+			<div class='popup' id='chatbox'>
+				<form id='chatform' v-on:submit='sendChat'>
+					<ul id='messages'>
+						<li v-for='chat in chats' :key='chat.msg'>
+							{{ chat.sender }}: {{ chat.msg }}
+						</li>
+					</ul>
+					<input id='chatmsg' autocomplete='off' />
+					<button type='submit'>Send</button>
+					<button type='button' id='cancel' v-on:click='closeChat'>Close</button>
+				</form>
+			</div>
+		</div>
+	
+		<script src='/socket.io/socket.io.js'></script>
+		<script src='less.min.js'></script>
+		<script src='helpers.js'></script>
+		<script src='main.js'></script>
+		<script src='sockets.js'></script>
+	</body>
+</html>

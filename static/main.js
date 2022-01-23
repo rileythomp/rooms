@@ -15,10 +15,15 @@ let app = new Vue({
     },
     mounted: function() {
         let saved = localStorage.getItem('username')
-        if (saved != null) {
+        if (saved != null && saved.length > 1 && saved.length < 21) {
             this.username = saved
         } else {
-            this.username = prompt('Welcome rooms, please enter a username')
+            let username = prompt('Welcome rooms, please enter a username')
+            while (username == null || username.length < 2 || username.length > 20) {
+                alert('Username must be between 2 and 20 characters')
+                username = prompt('Welcome rooms, please enter a username')
+            }
+            this.username = username
             localStorage.setItem('username', this.username)
         }
         joinGame(socket, this.username, this.curGame)
@@ -204,26 +209,7 @@ Vue.component('wordle', {
                 this.$refs.wordle.children[row].children[col].innerHTML = ''
             }
             else if (key == 'ENTER' && guess.length == 5) {
-                let correct = 0
-                for (let i = 0; i < guess.length; i++) {
-                    let row = this.guesses.length-1
-                    let color = 'crimson'
-                    if (guess[i] == this.word[i]) {
-                        color = '#00cc00'
-                        correct++
-                    } else if (this.word.includes(guess[i])) {
-                        color = '#ccff15'
-                    }
-                    this.$refs.wordle.children[row].children[i].style.color = color
-                    this.$refs.wordle.children[row].children[i].style.textShadow = `0 0 2px ${color}, 0 0 5px ${color}`
-                }
-                if (correct == guess.length) {
-                    socket.emit('done-wordle')
-                } else if (this.guesses.length == 6) {
-                    app.message = `Uh oh, you've run out of guesses. Word was ${this.word}`
-                    window.removeEventListener('keydown', this.handleKeypress)
-                }
-                this.guesses.push('')
+                socket.emit('check-word', guess)
             }
             else if ('A' <= key && key <= 'Z' && key.length == 1 && guess.length < 5 && this.guesses.length < 7) {
                 this.guesses[this.guesses.length-1] += key
@@ -231,6 +217,28 @@ Vue.component('wordle', {
                 let col = this.guesses[this.guesses.length-1].length - 1
                 this.$refs.wordle.children[row].children[col].innerHTML = key
             }
+        },
+        handleGuess: function(guess) {
+            let correct = 0
+            for (let i = 0; i < guess.length; i++) {
+                let row = this.guesses.length-1
+                let color = 'crimson'
+                if (guess[i] == this.word[i]) {
+                    color = '#00cc00'
+                    correct++
+                } else if (this.word.includes(guess[i])) {
+                    color = '#ccff15'
+                }
+                this.$refs.wordle.children[row].children[i].style.color = color
+                this.$refs.wordle.children[row].children[i].style.textShadow = `0 0 2px ${color}, 0 0 5px ${color}`
+            }
+            if (correct == guess.length) {
+                socket.emit('done-wordle')
+            } else if (this.guesses.length == 6) {
+                app.message = `Uh oh, you've run out of guesses. Word was ${this.word}`
+                window.removeEventListener('keydown', this.handleKeypress)
+            }
+            this.guesses.push('')
         },
         startRace: function(word) {
             this.word = word

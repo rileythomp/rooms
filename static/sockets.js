@@ -110,3 +110,12 @@ socket.on('wordle-won', (res) => {
         : `Opponent finished first in ${mins}:${secs}, word was ${app.$refs.gameComponent.word}`;
     setButtonDisplay('inline')
 })
+
+socket.on('word-valid', (valid, word) => {
+    app.message = ''
+    if (valid) {
+        app.$refs.gameComponent.handleGuess(word);
+    } else {
+        app.message = 'Guess must be a valid word'
+    }
+})

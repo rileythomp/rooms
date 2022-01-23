@@ -4,6 +4,7 @@ import { Socket, Server } from 'socket.io';
 
 import { Roomcodes } from 'src/model/roomcodes';
 import { Words, AvgWordLength } from 'src/model/words';
+import { WordleWords, AllowableWords } from 'src/model/wordle';
 import { Room } from 'src/model/models';
 
 import { RoomsService } from './rooms/rooms.service';
@@ -153,6 +154,15 @@ export class AppGateway {
 		})
 
 		// wordle socket
+
+		socket.on('check-word', (word) => {
+			socket.emit(
+				'word-valid',
+				AllowableWords.includes(word.toLowerCase()) ||
+				WordleWords.includes(word.toLowerCase()),
+				word
+			)
+		})
 		
 		socket.on('done-wordle', () => {
 			let room = this.rooms.getById(socket.id)
@@ -205,8 +215,7 @@ export class AppGateway {
 	}
 
 	initWordle(room: Room) {
-		let fives = Words.filter(word => word.length == 5)
-		room.game.word = fives[Math.floor(Math.random()*fives.length)].toUpperCase()
+		room.game.word = WordleWords[Math.floor(Math.random()*WordleWords.length)].toUpperCase()
 		room.game.start = Date.now()
 		this.io.to(room.id).emit('start-wordle', room.game.word)
 	}

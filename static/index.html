@@ -9,7 +9,11 @@
 	</head>
 	<body>
 		<div id='app'>
-			<p class='glow' id='username'>{{ username }}</p>
+			<p class='glow' id='username' v-on:click='changeName'>{{ username }}</p>
+			<div class='popup' id='name-change'>
+				<button>change name</button>
+			</div>
+
 			<button class='open-popup' id='open-menu' v-on:click='toggleMenu'>Menu</button>
 			<div class='popup' id='menu'>
 				<ul>

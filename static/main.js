@@ -33,6 +33,16 @@ let app = new Vue({
             let cur =  document.getElementById('menu').style.display
             document.getElementById('menu').style.display = (cur == 'block' ? 'none': 'block');
         },
+        changeName: () => {
+            let username = prompt('Please enter a username')
+            if (username == null || username.length < 2 || username.length > 20) {
+                alert('Username must be between 2 and 20 characters')
+                return
+            }
+            this.username = username
+            document.getElementById('username').innerHTML = this.username
+            localStorage.setItem('username', this.username)
+        },
         openChat: () => {
             document.getElementById('chatbox').style.display = 'block';
         },

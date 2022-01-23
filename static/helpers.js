@@ -1,6 +1,6 @@
 function joinGame(socket, username, game) {
     game = kebabGame(game)
-    let joinroom = prompt('Enter a room code if you have one, or click cancel to join a random game')
+    let joinroom = prompt('Enter a room code to create or join an existing room, or just hit enter to join a random room')
     if (joinroom == null || joinroom == '') {
         socket.emit('join-public', {name: username, game: game})
     } else {

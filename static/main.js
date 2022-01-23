@@ -18,7 +18,7 @@ let app = new Vue({
         if (saved != null) {
             this.username = saved
         } else {
-            this.username = prompt('Welcome to the game, please enter a username')
+            this.username = prompt('Welcome rooms, please enter a username')
             localStorage.setItem('username', this.username)
         }
         joinGame(socket, this.username, this.curGame)

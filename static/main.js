@@ -1,8 +1,7 @@
-let socket = io();
-
 const TicTacToe = 'Tic Tac Toe';
 const TypingRace = 'Typing Race';
 const Wordle = 'Wordle';
+const Jeopardy = 'Jeopardy'
 
 let app = new Vue({
     el: '#app',
@@ -11,7 +10,7 @@ let app = new Vue({
         username: '',
         chats: [],
         curGame: 'tic-tac-toe',
-        games: [TicTacToe, TypingRace, Wordle],
+        games: [TicTacToe, TypingRace, Wordle, Jeopardy],
     },
     mounted: function() {
         let saved = localStorage.getItem('username')
@@ -76,6 +75,12 @@ let app = new Vue({
             joinGame(socket, this.username, this.curGame)
         }
     }
+})
+
+Vue.component('jeopardy', {
+    methods: {
+    },
+    template: ``
 })
 
 Vue.component('tic-tac-toe', {

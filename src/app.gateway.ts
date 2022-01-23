@@ -3,7 +3,7 @@ import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 
 import { Roomcodes } from 'src/model/roomcodes';
-import { Words, AvgWordLength } from 'src/model/words';
+import { Words, AvgWordLength } from 'src/model/typingwords';
 import { WordleWords, AllowableWords } from 'src/model/wordle';
 import { Room } from 'src/model/models';
 

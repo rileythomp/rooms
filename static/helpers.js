@@ -1,7 +1,12 @@
 function joinGame(socket, username, game) {
+    if (game == Jeopardy) {
+        joinJeopardy(username)
+
+        return
+    }
     game = kebabGame(game)
     let joinroom = prompt('Enter a room code to create or join an existing room, or just hit enter to join a random room')
-    if (joinroom == null || joinroom == '') {
+    if (joinroom == null || joinroom.length < 2 || joinroom.length > 20) {
         socket.emit('join-public', {name: username, game: game})
     } else {
         socket.emit('join-private', {name: username, game: game, code: joinroom})
@@ -9,7 +14,7 @@ function joinGame(socket, username, game) {
 }
 
 function leaveGame(socket) {
-    this.message = ''
+    app.message = ''
     setButtonDisplay('none')
     socket.emit('leave-game')
 }

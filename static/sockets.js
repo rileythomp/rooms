@@ -1,3 +1,5 @@
+let socket = io();
+
 socket.on('join-success', (game) => {
     game = formatGame(game)
     clearGame(game, app.$refs.gameComponent)

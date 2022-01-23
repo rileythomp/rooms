@@ -200,6 +200,9 @@ Vue.component('wordle', {
     },
     methods: {
         handleKeypress: function(ev) {
+            if (document.activeElement.tagName != "BODY") {
+                return
+            }
             let key = ev.key.toUpperCase()
             let guess = this.guesses[this.guesses.length-1]
             if (key == 'BACKSPACE' && guess.length > 0 && this.guesses.length < 7) {

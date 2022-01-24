@@ -10,7 +10,7 @@ let app = new Vue({
         username: '',
         chats: [],
         curGame: 'tic-tac-toe',
-        games: [TicTacToe, TypingRace, Wordle, Jeopardy],
+        games: [TicTacToe, TypingRace, Wordle],
     },
     mounted: function() {
         let saved = localStorage.getItem('username')
@@ -233,9 +233,18 @@ Vue.component('wordle', {
                 let color = 'crimson'
                 if (guess[i] == this.word[i]) {
                     color = '#00cc00'
+                    document.getElementById(guess[i]).style.color = color
+                    document.getElementById(guess[i]).style.textShadow = `0 0 2px ${color}, 0 0 5px ${color}`
                     correct++
                 } else if (this.word.includes(guess[i])) {
                     color = '#ccff15'
+                    if (document.getElementById(guess[i]).style.color == '') {
+                        document.getElementById(guess[i]).style.color = color
+                        document.getElementById(guess[i]).style.textShadow = `0 0 2px ${color}, 0 0 5px ${color}`
+                    }
+                } else {
+                    document.getElementById(guess[i]).style.color = color
+                    document.getElementById(guess[i]).style.textShadow = `0 0 2px ${color}, 0 0 5px ${color}`
                 }
                 this.$refs.wordle.children[row].children[i].style.color = color
                 this.$refs.wordle.children[row].children[i].style.textShadow = `0 0 2px ${color}, 0 0 5px ${color}`
@@ -278,6 +287,11 @@ Vue.component('wordle', {
         },
         clearGame: function() {
             this.guesses = ['']
+            let letters = document.querySelectorAll('#letters span')
+            for (let letter of letters) {
+                letter.style.color = ''
+                letter.style.textShadow = ''
+            }
             let cells = document.querySelectorAll(`#wordle-board td`)
             for (let cell of cells) {
                 cell.innerHTML = '';
@@ -287,49 +301,80 @@ Vue.component('wordle', {
             window.removeEventListener('keydown', this.handleKeypress)
         },
     },
-    template: `
-    <table id='wordle-board' ref='wordle'>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </table>`
+template: `
+    <div id='wordle-game'>
+        <p id='letters' >
+            <span id='A'>A</span>
+            <span id='B'>B</span>
+            <span id='C'>C</span>
+            <span id='D'>D</span>
+            <span id='E'>E</span>
+            <span id='F'>F</span>
+            <span id='G'>G</span>
+            <span id='H'>H</span>
+            <span id='I'>I</span>
+            <span id='J'>J</span>
+            <span id='K'>K</span>
+            <span id='L'>L</span>
+            <span id='M'>M</span>
+            <span id='N'>N</span>
+            <span id='O'>O</span>
+            <span id='P'>P</span>
+            <span id='Q'>Q</span>
+            <span id='R'>R</span>
+            <span id='S'>S</span>
+            <span id='T'>T</span>
+            <span id='U'>U</span>
+            <span id='V'>V</span>
+            <span id='W'>W</span>
+            <span id='X'>X</span>
+            <span id='Y'>Y</span>
+            <span id='Z'>Z</span>
+        </p>
+        <table id='wordle-board' ref='wordle'>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    `
 })

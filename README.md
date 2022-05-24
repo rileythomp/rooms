@@ -1,6 +1,6 @@
 # rooms
 
-A site for live 2 player games such as Worlde, typing races and tic-tac-toe. Also has a chat feature for communication between players.
+A site for live 2 player games such as Wordle, typing races and tic-tac-toe. Also has a chat feature for communication between players.
 
 https://game-rooms.herokuapp.com
 
